@@ -10,6 +10,8 @@ local project = require("grim.project.project")
 local track = require("grim.track.track")
 local tracks = require("grim.tracks.tracks")
 
+local function init() end
+
 return {
 	envelope = envelope,
 	item = item,

@@ -8,63 +8,72 @@ local track = require("grim.track.track")
 ---@field _name string | nil -- The name of the project.
 ---@field _path string | nil -- The file path of the .rpp file.
 ---@field _recordingPath string | nil -- The recording path of the project.
----@field _tracks []Track | nil -- The project's tracks.
-local projectT = {}
+---@field _tracks Track[] | nil -- The project's tracks.
+local project = {}
 
 ---Project.New returns a newly initialized Project object.
----@param reaProject ReaProject
+---@param reaProject integer | nil
 ---@return Project | nil, nil | string
-local function newProject(reaProject)
-	if not reaper.ValidatePtr(reaProject, "ReaProject*") then
+function project:New(reaProject)
+	---@type ReaProject | nil
+	local p = nil
+
+	if reaProject == nil then
+		p = reaper.EnumProjects(-1)
+	end
+
+	if project == nil or not reaper.ValidatePtr(p, "ReaProject*") then
 		return nil, "Project:New() requires a valid ReaProject."
 	end
 
 	---@type Project
 	local new = {
-		_ = reaProject,
+		_ = project,
 		_name = nil,
 		_path = nil,
 		_recordingPath = nil,
 	}
 
-	setmetatable(new, self)
-	self.__index = self
+	setmetatable(new, { __index = project })
 
 	return new, nil
 end
 
 ---@return string | nil
-function projectT:Name()
+function project:Name()
 	if self._name == nil then
 		self._name = reaper.GetProjectName(self._)
 	end
 	return self._name
 end
 
-function projectT:RecordingPath()
+function project:RecordingPath()
 	if self._recordingPath == nil then
 		self._recordingPath = reaper.GetProjectPath()
 	end
 	return self._recordingPath
 end
 
+-- TODO: revisit!
 ---description Path checks self._path and, if nil, gets the Project's path; if not found, returns nil and an error message. Analogous to a Python @property.
 ---@return string | nil, string | nil
-function projectT:Path()
+function project:Path()
 	if self._path == nil then
-		local name = self.Name()
+		local name = self:Name()
 		if name == nil then
 			return nil, "could not get name of project"
 		end
 
-		local recordingPath = self.RecordingPath()
+		local recordingPath = self:RecordingPath()
 		if recordingPath == nil then
 			return nil, "could not get name of recording path of project: " .. name .. "\n"
 		end
 
 		-- This is used to assume the path of the project file, as it is usually in the same directory as the Media folder.
 		---@type string
-		local path = recordingPath:gsub("Media" .. "$", "") .. name .. ".rpp" -- gsub("Media" .. "$", "") removes the trailing "Media" from self.RecordingPath.
+		local path = recordingPath:gsub("Media" .. "$", "") ..
+			name ..
+			".rpp" -- gsub("Media" .. "$", "") removes the trailing "Media" from self.RecordingPath.
 
 		if not reaper.file_exists(path) then
 			-- NOTE: This will happen if the project is not saved yet, or if self.RecordingPath has been manually changed by the user.
@@ -77,10 +86,11 @@ function projectT:Path()
 	return self._path, nil
 end
 
+-- TODO: revisit!
 ---Project.GetTracks Returns a table of all Tracks in the current project.
 ---If no tracks are found, it returns nil.
 ---@return Track[] | nil
-function projectT:GetTracks()
+function project:GetTracks()
 	local numTracks = reaper.CountTracks(self._)
 
 	if numTracks == 0 then
@@ -104,10 +114,11 @@ function projectT:GetTracks()
 	return nil
 end
 
+-- TODO: revisit!
 ---Project.SelectAllTracks selects all Tracks in the current project.
 ---If no tracks are found, it returns an error message.
 ---@return string | nil
-function projectT:SelectAllTracks()
+function project:SelectAllTracks()
 	local tracks = self:GetTracks()
 	if not tracks then
 		return "Project:SelectAllTracks() failed to get tracks."
@@ -123,10 +134,11 @@ function projectT:SelectAllTracks()
 	return nil
 end
 
+-- TODO: revisit!
 ---Project.DeselectAllTracks deselects all Tracks in the current project.
 ---If no tracks are found, it returns an error message.
 ---@return string | nil
-function projectT:DeselectAllTracks()
+function project:DeselectAllTracks()
 	local tracks = self:GetTracks()
 	if not tracks then
 		return "Project:DeselectAllTracks() failed to get tracks."
@@ -142,12 +154,13 @@ function projectT:DeselectAllTracks()
 	return nil
 end
 
+-- TODO: revisit!
 ---Project.GetTrackByName retrieves a Track by its name in the current project.
 ---Retuns a table of Tracks, even if only one match is found.
 ---If no track with the given name is found, it returns nil.
 ---@param name string
 ---@return Track[] | nil
-function projectT:GetAllTracksByName(name)
+function project:GetAllTracksByName(name)
 	local tracks = {}
 	local numTracks = reaper.CountTracks(self._)
 	for i = 0, numTracks - 1 do
@@ -176,17 +189,16 @@ end
 ---If no track with the given name is found, it returns nil.
 ---@param name string
 ---@return Track | nil
-function projectT:GetTrackByName(name)
+function project:GetTrackByName(name)
 	-- TODO: call GetTracksByName and then return Track with lowest index.
 end
 
 -- TODO:
-function projectT:GetFramerate() end
+function project:GetFramerate() end
 
 -- TODO:
-function projectT:ChangeFramerate() end
+function project:ChangeFramerate() end
 
 return {
-	Project = projectT,
-	NewProject = newProject,
+	Project = project,
 }

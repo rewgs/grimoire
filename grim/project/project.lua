@@ -71,9 +71,7 @@ function project:Path()
 
 		-- This is used to assume the path of the project file, as it is usually in the same directory as the Media folder.
 		---@type string
-		local path = recordingPath:gsub("Media" .. "$", "") ..
-			name ..
-			".rpp" -- gsub("Media" .. "$", "") removes the trailing "Media" from self.RecordingPath.
+		local path = recordingPath:gsub("Media" .. "$", "") .. name .. ".rpp" -- gsub("Media" .. "$", "") removes the trailing "Media" from self.RecordingPath.
 
 		if not reaper.file_exists(path) then
 			-- NOTE: This will happen if the project is not saved yet, or if self.RecordingPath has been manually changed by the user.
@@ -86,32 +84,33 @@ function project:Path()
 	return self._path, nil
 end
 
--- TODO: revisit!
----Project.GetTracks Returns a table of all Tracks in the current project.
+---@description GetTracks returns a table of all Tracks in the current project. Analogous to a Python @property.
 ---If no tracks are found, it returns nil.
----@return Track[] | nil
-function project:GetTracks()
-	local numTracks = reaper.CountTracks(self._)
-
-	if numTracks == 0 then
-		return nil
-	end
-
-	local tracks = {}
-	for i = 0, numTracks - 1 do
-		local mediaTrack = reaper.GetTrack(self._, i)
-		local newTrack, err = track.Track:New(self._, mediaTrack)
-		if newTrack == nil or newTrack == err then
-			error("Project:GetTracks() failed to create Track: " .. (err or "unknown error"))
+---@return Track[] | nil, string | nil
+function project:Tracks()
+	if self._tracks == nil then
+		local numTracks = reaper.CountTracks(self._)
+		if numTracks == 0 then
+			return nil, "project does not contain any tracks: " .. self:Name()
 		end
-		table.insert(tracks, newTrack)
-	end
 
-	if #tracks >= 1 then
-		return tracks
-	end
+		local tracks = {}
+		for i = 0, numTracks - 1 do
+			local mediaTrack = reaper.GetTrack(self._, i)
+			local t, err = track.Track:New(self._, mediaTrack)
+			if err ~= nil then
+				return nil, (err or "unknown error:") .. "\n" .. "failed to create track #" .. (i + 1) .. "\n"
+			end
+			table.insert(tracks, t)
+		end
 
-	return nil
+		local num_tracks = #tracks
+		if num_tracks < 1 then
+			return nil, "could not create any of " .. num_tracks .. " due to unknown error\n"
+		end
+
+		return tracks, nil
+	end
 end
 
 -- TODO: revisit!
@@ -119,7 +118,7 @@ end
 ---If no tracks are found, it returns an error message.
 ---@return string | nil
 function project:SelectAllTracks()
-	local tracks = self:GetTracks()
+	local tracks = self:Tracks()
 	if not tracks then
 		return "Project:SelectAllTracks() failed to get tracks."
 	end
@@ -139,7 +138,7 @@ end
 ---If no tracks are found, it returns an error message.
 ---@return string | nil
 function project:DeselectAllTracks()
-	local tracks = self:GetTracks()
+	local tracks = self:Tracks()
 	if not tracks then
 		return "Project:DeselectAllTracks() failed to get tracks."
 	end

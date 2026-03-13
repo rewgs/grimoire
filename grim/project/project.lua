@@ -11,21 +11,23 @@ local track = require("grim.track.track")
 ---@field _tracks Track[] | nil -- The project's tracks.
 local project = {}
 
----Project.New returns a newly initialized Project object.
+---@description Project:New returns a newly initialized Project object.
 ---@param reaProject integer | nil
 ---@return Project | nil, nil | string
 function project:New(reaProject)
 	if reaProject == nil then
-		reaProject = reaper.EnumProjects(-1)
+		reaProject = -1
 	end
 
-	if not reaper.ValidatePtr(reaProject, "ReaProject*") then
+	---@type ReaProject
+	local p = reaper.EnumProjects(reaProject)
+	if not reaper.ValidatePtr(p, "ReaProject*") then
 		return nil, "Project:New() requires a valid ReaProject."
 	end
 
 	---@type Project
 	local new = {
-		_ = reaProject,
+		_ = p,
 		_name = nil,
 		_path = nil,
 		_recordingPath = nil,
@@ -68,7 +70,9 @@ function project:Path()
 
 		-- This is used to assume the path of the project file, as it is usually in the same directory as the Media folder.
 		---@type string
-		local path = recordingPath:gsub("Media" .. "$", "") .. name .. ".rpp" -- gsub("Media" .. "$", "") removes the trailing "Media" from self.RecordingPath.
+		local path = recordingPath:gsub("Media" .. "$", "") ..
+			name ..
+			".rpp" -- gsub("Media" .. "$", "") removes the trailing "Media" from self.RecordingPath.
 
 		if not reaper.file_exists(path) then
 			-- NOTE: This will happen if the project is not saved yet, or if self.RecordingPath has been manually changed by the user.

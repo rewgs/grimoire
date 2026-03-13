@@ -47,6 +47,7 @@ function project:Name()
 	return self._name
 end
 
+---@return string | nil
 function project:RecordingPath()
 	if self._recordingPath == nil then
 		self._recordingPath = reaper.GetProjectPath()
@@ -54,8 +55,7 @@ function project:RecordingPath()
 	return self._recordingPath
 end
 
--- TODO: revisit!
----description Path checks self._path and, if nil, gets the Project's path; if not found, returns nil and an error message. Analogous to a Python @property.
+---@description Path checks self._path and, if nil, gets the Project's path; if not found, returns nil and an error message. Analogous to a Python @property.
 ---@return string | nil, string | nil
 function project:Path()
 	if self._path == nil then

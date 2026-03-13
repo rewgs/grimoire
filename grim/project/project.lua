@@ -15,20 +15,17 @@ local project = {}
 ---@param reaProject integer | nil
 ---@return Project | nil, nil | string
 function project:New(reaProject)
-	---@type ReaProject | nil
-	local p = nil
-
 	if reaProject == nil then
-		p = reaper.EnumProjects(-1)
+		reaProject = reaper.EnumProjects(-1)
 	end
 
-	if project == nil or not reaper.ValidatePtr(p, "ReaProject*") then
+	if not reaper.ValidatePtr(reaProject, "ReaProject*") then
 		return nil, "Project:New() requires a valid ReaProject."
 	end
 
 	---@type Project
 	local new = {
-		_ = project,
+		_ = reaProject,
 		_name = nil,
 		_path = nil,
 		_recordingPath = nil,

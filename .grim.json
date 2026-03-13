@@ -1,0 +1,15 @@
+{
+    "dev": true,
+    "env": true,
+    "offline": true,
+    "reascript": {},
+    "requisites": ["github.com/rewgs/grim"],
+    "scripts": [
+        {
+            "name": "format",
+            "command": "grim",
+            "no-run": false
+        }
+    ],
+    "tests dir": "./tests"
+}

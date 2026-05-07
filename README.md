@@ -1,6 +1,6 @@
 # Grimoire
 
-> A grimoire (/ɡrɪmˈwɑːr/), also known as a book of spells, magic book, or a spellbook,[1] is a textbook of magic, typically including instructions on how to create magical objects...
+> A grimoire (/ɡrɪmˈwɑːr/), also known as a book of spells, magic book, or a spellbook, is a textbook of magic, typically including instructions on how to create magical _objects_...
 
 <p align="center">
     <!-- Original width: 512 px -->

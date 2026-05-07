@@ -1,13 +1,15 @@
-# grim
+# Grimoire
+
+> A grimoire (/ɡrɪmˈwɑːr/), also known as a book of spells, magic book, or a spellbook,[1] is a textbook of magic, typically including instructions on how to create magical objects...
 
 <p align="center">
     <!-- Original width: 512 px -->
-  <img src="./assets/icon.png" width="256"/>
+  <img src="./images/grimoire-icon.svg" width="256"/>
 </p>
 
-`grim` is a library that significantly speeds up ReaScript development by providing a more object-oriented approach for interacting with the Reaper [ReaScript Lua API](https://www.reaper.fm/sdk/reascript/reascripthelp.html#l). It wraps each of ReaScript's data types (`ReaProject`, `MediaTrack`, `MediaItem`, etc) with a [class](https://www.lua.org/pil/16.1.html) (`Project`, `Track`, and `Item`, respectively); each class provides a number of useful methods, and each class's namespace provides some utility functions related to it.
+`grimoire` is a library that significantly speeds up ReaScript development by providing a more object-oriented approach for interacting with the Reaper [ReaScript Lua API](https://www.reaper.fm/sdk/reascript/reascripthelp.html#l). It wraps each of ReaScript's data types (`ReaProject`, `MediaTrack`, `MediaItem`, etc) with a [class](https://www.lua.org/pil/16.1.html) (`Project`, `Track`, and `Item`, respectively); each class provides a number of useful methods, and each class's namespace provides some utility functions related to it.
 
-There are several other classes/types original to this library which are intended to increase quality-of-life, such as [`track.FolderDepth`](./grim/track/folderDepth.lua).
+There are several other classes/types original to this library which are intended to increase quality-of-life, such as [`track.FolderDepth`](./grimoire/track/folderDepth.lua).
 
 <!-- Utilizes the [Ultraschall API](https://mespotin.uber.space/Ultraschall/US_Api_Introduction_and_Concepts.html) render table-related functionality. -->
 
@@ -21,7 +23,7 @@ All symbols have type annotations according to the [`lua-language-server` specif
 
 > [!WARNING]
 >
-> **grim is a work in progress
+> **grimoire is a work in progress
 > and does not have a `1.0` release yet.**
 
 ## why?
@@ -47,10 +49,11 @@ end
 local track = getTrackByName("some track")
 ```
 
-And this is how one achieves the same thing with `grim`:
+And this is how one achieves the same thing with `grimoire`:
 
 ```lua
-local project = grim.Project:New()
+local g = require("grimoire")
+local project = g.Project:New()
 local track = project:GetTrackByName("some track")
 ```
 

@@ -1,0 +1,47 @@
+<svg viewBox="0 0 400 400" width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0e8d8"/>
+      <stop offset="100%" stop-color="#d8ccb0"/>
+    </linearGradient>
+    <linearGradient id="cover" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9a1a1a"/>
+      <stop offset="100%" stop-color="#5c0a0a"/>
+    </linearGradient>
+    <linearGradient id="pages" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#e8e0cc"/>
+      <stop offset="100%" stop-color="#c8b89a"/>
+    </linearGradient>
+    <clipPath id="gclip">
+      <rect x="16" y="16" width="368" height="368" rx="82" ry="82"/>
+    </clipPath>
+  </defs>
+  <rect x="16" y="16" width="368" height="368" rx="82" ry="82" fill="url(#bg)"/>
+  <g clip-path="url(#gclip)">
+    <!-- Book body -->
+    <rect x="90" y="105" width="220" height="210" rx="8" fill="url(#cover)"/>
+    <!-- Spine -->
+    <rect x="90" y="105" width="32" height="210" rx="8" fill="#3d0808"/>
+    <!-- Page block -->
+    <rect x="118" y="112" width="185" height="196" rx="4" fill="url(#pages)"/>
+    <!-- Staff lines -->
+    <rect x="135" y="175" width="150" height="3" rx="1.5" fill="#a09070" fill-opacity="0.6"/>
+    <rect x="135" y="186" width="150" height="3" rx="1.5" fill="#a09070" fill-opacity="0.6"/>
+    <rect x="135" y="197" width="150" height="3" rx="1.5" fill="#a09070" fill-opacity="0.6"/>
+    <rect x="135" y="208" width="150" height="3" rx="1.5" fill="#a09070" fill-opacity="0.6"/>
+    <rect x="135" y="219" width="150" height="3" rx="1.5" fill="#a09070" fill-opacity="0.6"/>
+    <!-- Skull embossed on cover -->
+    <ellipse cx="210" cy="148" rx="28" ry="24" fill="#c8b89a" fill-opacity="0.18"/>
+    <ellipse cx="199" cy="148" rx="7" ry="8" fill="#3d0808" fill-opacity="0.65"/>
+    <ellipse cx="221" cy="148" rx="7" ry="8" fill="#3d0808" fill-opacity="0.65"/>
+    <path d="M207 160 L210 155 L213 160 Z" fill="#3d0808" fill-opacity="0.55"/>
+    <rect x="200" y="163" width="5" height="7" rx="1" fill="#3d0808" fill-opacity="0.5"/>
+    <rect x="207" y="163" width="5" height="7" rx="1" fill="#3d0808" fill-opacity="0.5"/>
+    <rect x="214" y="163" width="5" height="7" rx="1" fill="#3d0808" fill-opacity="0.5"/>
+    <!-- Clasp -->
+    <rect x="295" y="190" width="16" height="30" rx="5" fill="#c8a040" fill-opacity="0.85"/>
+    <rect x="298" y="198" width="10" height="14" rx="3" fill="#8a6010" fill-opacity="0.7"/>
+    <!-- Cover border trim -->
+    <rect x="122" y="116" width="177" height="188" rx="3" fill="none" stroke="#c8a040" stroke-width="1.5" stroke-opacity="0.35"/>
+  </g>
+</svg>

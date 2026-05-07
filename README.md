@@ -4,7 +4,7 @@
 
 <p align="center">
     <!-- Original width: 512 px -->
-  <img src="./images/grimoire-icon.svg" width="256"/>
+  <img src="./images/grimoire-icon-dark.svg" />
 </p>
 
 `grimoire` is a library that significantly speeds up ReaScript development by providing a more object-oriented approach for interacting with the Reaper [ReaScript Lua API](https://www.reaper.fm/sdk/reascript/reascripthelp.html#l). It wraps each of ReaScript's data types (`ReaProject`, `MediaTrack`, `MediaItem`, etc) with a [class](https://www.lua.org/pil/16.1.html) (`Project`, `Track`, and `Item`, respectively); each class provides a number of useful methods, and each class's namespace provides some utility functions related to it.
